@@ -455,6 +455,16 @@ if (uuid.value) {
         <p>暂无审稿事件信息。</p>
       </div>
     </div>
+
+    <div class="footer">
+      <a href="https://github.com/KarlRaphel/elsevier-tracker-web"
+        >View Source on GitHub
+      </a>
+      <span style="width: 20px">|</span>
+      <img
+        src="https://img.shields.io/github/stars/KarlRaphel/elsevier-tracker-web"
+      />
+    </div>
   </div>
 </template>
 
@@ -771,5 +781,14 @@ h2 {
     font-size: 0.85em;
   }
   /* Step/spacer sizes can remain or be adjusted if needed */
+}
+
+.footer {
+  padding: 5px;
+  display: flex;
+  background-color: #f8f9fa;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 </style>
