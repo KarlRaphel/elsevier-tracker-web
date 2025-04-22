@@ -1,6 +1,10 @@
 # 📄 爱思唯尔稿件追踪网页版 (Elsevier Review Tracker - Web Version)
 
-[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live%20Demo-black?style=flat-square&logo=vercel)](https://elsevier-tracker-web.vercel.app/)
+<div align=center>
+
+[![Azure](https://img.shields.io/badge/Demo-online-brightgreen?style=for-the-badge&logo=azure-static-web-apps)](https://happy-cliff-0660af200.6.azurestaticapps.net/)
+
+</div>
 
 告别浏览器插件的繁琐安装，拥抱清爽的网页体验！本项目旨在利用 Elsevier 官方 API，为您提供一个更直观、更全面、更便捷的稿件审稿进度可视化追踪工具。
 
@@ -35,10 +39,14 @@
 
 使用方法极其简单：
 
-1.  找到你的 Elsevier 官方稿件追踪链接，它看起来像这样：
-    `https://track.authorhub.elsevier.com/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
-2.  将链接中的域名 `track.authorhub.elsevier.com` 替换为我们的体验地址 `elsevier-tracker-web.vercel.app`：
-    `https://elsevier-tracker-web.vercel.app/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
+1.  在通讯作者的邮箱中，找到你的 Elsevier 官方稿件追踪链接，它看起来像这样：
+    ```url
+    https://track.authorhub.elsevier.com/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    ```
+2.  将链接中的域名 `track.authorhub.elsevier.com` 替换为我们的体验地址 `happy-cliff-0660af200.6.azurestaticapps.net`，像这样：
+    ```
+    https://happy-cliff-0660af200.6.azurestaticapps.net/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    ```
 3.  在浏览器中打开修改后的链接，即可开始追踪！
 
 **小贴士:** 你可以将修改后的链接添加到手机书签或“添加到主屏幕”，方便后续快速访问。
@@ -131,10 +139,31 @@ cd ..
 
 ---
 
-希望这个工具能为你的科研之路提供一点小小的便利！🎉  
-如果这个工具对您有帮助，请不要吝啬你的 Star⭐️ ！欢迎您在社交平台分享这个工具，以帮助更多科研人员了解和利用这个工具。您的支持是我继续维护和开发这个项目的动力。
+## 🛜 公共体验地址选项
+
+1.  **Azure 前端体验地址（国内稳定）**：[https://happy-cliff-0660af200.6.azurestaticapps.net](https://happy-cliff-0660af200.6.azurestaticapps.net)
+
+2.  **Vercel 前端体验地址（国际稳定）**：[https://elsevier-tracker-web.vercel.app](https://elsevier-tracker-web.vercel.app)
+
+3.  **Azure API 代理体验地址（国内稳定）**：[https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=your_uuid](https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=your_uuid)
+
+4.  **Vercel API 代理体验地址（国际稳定）**：[https://elsevier-api-proxy.vercel.app/api/your_uuid](https://elsevier-api-proxy.vercel.app/api/your_uuid)
+
+---
+
+## ❤️ 赞助
+
+希望这个工具能为你的科研之路提供一点小小的便利！🎉   
+如果这个工具对您有帮助，请不要吝啬你的 Star⭐️ ！  
+欢迎您在社交平台分享这个工具，以帮助更多科研人员了解和利用这个工具。  
+您的支持是我继续维护和开发这个项目的动力。
 祝您科研之旅顺利！
 
+您可以通过以下方式进行赞助：
+
+1. 通过微信赞赏码
 <div align="center">
 <img src="docs/donation_qr_code.jpg" width="40%">
 </div>
+
+2. 通过自部署前后端，并提交 issue/PR 以减轻服务器压力。
