@@ -3,7 +3,10 @@ import { ref, reactive, computed } from "vue";
 
 // --- Configuration ---
 // 查询的代理地址，可以自己部署
-const apiUrl = "https://elsevier-api-proxy.vercel.app/api/"; // PRODUCTION API URL
+// vercel版本
+// const apiUrl = "https://elsevier-api-proxy.vercel.app/api/"; // PRODUCTION API URL
+// azure functions版本
+const apiUrl = "https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=";
 
 // --- State Refs ---
 const uuid = ref("");

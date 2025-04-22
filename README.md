@@ -49,7 +49,7 @@
 
 **然而，由于浏览器的 CORS（跨源资源共享）策略限制，网页无法直接访问该官方 API。**
 
-**解决方案：** 我们部署了一个**中转 API 代理** (`https://elsevier-api-proxy.vercel.app/api/`) 来绕过这个限制。这意味着当你使用本项目的公共体验地址时：
+**解决方案：** 我们部署了一个**中转 API 代理** (`https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=`) 来绕过这个限制。这意味着当你使用本项目的公共体验地址时：
 
 1.  你的查询请求（包含稿件的 `uuid`）会先发送到我们的中转 API 代理。
 2.  中转 API 代理再代替你的浏览器去请求官方 API。
