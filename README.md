@@ -2,7 +2,7 @@
 
 <div align=center>
 
-[![Azure](https://img.shields.io/badge/Demo-online-brightgreen?style=for-the-badge&logo=azure-static-web-apps)](#🛜-公共体验地址选项)
+[![Azure](https://img.shields.io/badge/Demo-online-brightgreen?style=for-the-badge&logo=azure-static-web-apps)](#-公共体验地址选项)
 
 </div>
 
@@ -43,7 +43,7 @@
     ```url
     https://track.authorhub.elsevier.com/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     ```
-2.  将链接中的域名 `track.authorhub.elsevier.com` 替换为我们的[公共体验地址](#🛜-公共体验地址选项)中的任意一个，像这样：
+2.  将链接中的域名 `track.authorhub.elsevier.com` 替换为我们的[公共体验地址](#-公共体验地址选项)中的任意一个，像这样：
     ```
     https://happy-cliff-0660af200.6.azurestaticapps.net/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     ```
