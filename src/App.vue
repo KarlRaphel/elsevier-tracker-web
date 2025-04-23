@@ -30,6 +30,8 @@ const expandedRevision = ref(null);
 const isLoading = ref(true);
 const errorMsg = ref("");
 
+const noewApi = ref("");
+
 // --- Initialization ---
 const queryString = window.location.search;
 const params = new URLSearchParams(queryString);
@@ -170,7 +172,7 @@ function updateState() {
     ...apiUrlOptions.map((url) => `${url}${uuid.value}`),
   ];
   let lastError = null;
-  // 定义递归尝试函数
+  const TIMEOUT_MS = 5000;
   function tryFetch(index) {
     if (index >= urlList.length) {
       // 全部失败
@@ -188,8 +190,14 @@ function updateState() {
       return;
     }
     const targetUrl = urlList[index];
-    fetch(targetUrl)
+    noewApi.value = new URL(urlList[index]).hostname;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, TIMEOUT_MS);
+    fetch(targetUrl, { signal: controller.signal })
       .then(async (response) => {
+        clearTimeout(timeoutId);
         if (!response.ok) {
           let errorData = null;
           try {
@@ -210,11 +218,11 @@ function updateState() {
           console.warn("API response might be missing 'ReviewEvents'.");
         processData(data);
         isLoading.value = false;
-        console.log("use api:", targetUrl);
       })
       .catch((error) => {
+        clearTimeout(timeoutId);
         lastError = error;
-        // 尝试下一个代理
+        // 如果是超时或其他错误，尝试下一个代理
         tryFetch(index + 1);
       });
   }
@@ -288,7 +296,7 @@ if (uuid.value) {
     <h1>爱思唯尔稿件状态追踪</h1>
 
     <div v-if="isLoading" class="loading-indicator card">
-      正在加载稿件信息...
+      正在尝试通过 {{ noewApi }} 查询稿件信息...
     </div>
     <div v-if="errorMsg" class="error-message card" v-html="errorMsg"></div>
 
