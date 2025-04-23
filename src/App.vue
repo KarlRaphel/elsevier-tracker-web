@@ -190,7 +190,7 @@ function updateState() {
       return;
     }
     const targetUrl = urlList[index];
-    noewApi.value = new URL(urlList[index]).hostname;
+    noewApi.value = urlList[index].replace(uuid.value, "");
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
       controller.abort();
