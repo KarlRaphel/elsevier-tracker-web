@@ -1,12 +1,16 @@
 <script setup>
 import { ref, reactive, computed } from "vue";
 
-// --- Configuration ---
-// 查询的代理地址，可以自己部署
-// vercel版本
-// const apiUrl = "https://elsevier-api-proxy.vercel.app/api/"; // PRODUCTION API URL
-// azure functions版本
-const apiUrl = "https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=";
+// 首选查询的代理地址，可以自己部署
+const apiUrl = "https://elsevier-api-proxy.vercel.app/api/";
+
+// 如果首选查询代理地址无效，将自动按照以下顺序进行尝试
+const apiUrlOptions = [
+  "https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=",
+  "https://elsevier-api-proxy.599600.xyz/api/",
+  "https://elsevier-api-proxy.vercel.app/api/",
+  "https://tnlkuelk67.execute-api.us-east-1.amazonaws.com/tracker/",
+];
 
 // --- State Refs ---
 const uuid = ref("");
@@ -160,35 +164,19 @@ function processData(data) {
 function updateState() {
   isLoading.value = true;
   errorMsg.value = "";
-  // --- Use Production API URL ---
-  const targetUrl = `${apiUrl}${uuid.value}`;
-  // const targetUrl = "test-data.json"; // Keep for local testing if needed
-
-  fetch(targetUrl)
-    .then(async (response) => {
-      if (!response.ok) {
-        let errorData = null;
-        try {
-          errorData = await response.json();
-        } catch (e) {}
-        const errorText =
-          errorData?.message ||
-          response.statusText ||
-          `HTTP error ${response.status}`;
-        throw new Error(errorText);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (!data || typeof data !== "object") throw new Error("收到的数据无效");
-      if (data.ReviewEvents === undefined)
-        console.warn("API response might be missing 'ReviewEvents'."); // Check for undefined specifically
-      // console.log("Raw data:", data);
-      processData(data);
-    })
-    .catch((error) => {
-      console.error("Fetch 操作失败:", error);
-      errorMsg.value = `无法加载稿件信息: ${error.message}`;
+  // 构造所有候选URL
+  const urlList = [
+    `${apiUrl}${uuid.value}`,
+    ...apiUrlOptions.map((url) => `${url}${uuid.value}`),
+  ];
+  let lastError = null;
+  // 定义递归尝试函数
+  function tryFetch(index) {
+    if (index >= urlList.length) {
+      // 全部失败
+      errorMsg.value = `无法加载稿件信息: ${
+        lastError ? lastError.message : "所有代理都不可用"
+      }`;
       paperTitle.value = "错误";
       journalInfo.value = "";
       firstAuthor.value = "";
@@ -196,10 +184,41 @@ function updateState() {
       pubID.value = "";
       lastUpdated.value = "";
       revisionList.value = [];
-    })
-    .finally(() => {
       isLoading.value = false;
-    });
+      return;
+    }
+    const targetUrl = urlList[index];
+    fetch(targetUrl)
+      .then(async (response) => {
+        if (!response.ok) {
+          let errorData = null;
+          try {
+            errorData = await response.json();
+          } catch (e) {}
+          const errorText =
+            errorData?.message ||
+            response.statusText ||
+            `HTTP error ${response.status}`;
+          throw new Error(errorText);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!data || typeof data !== "object")
+          throw new Error("收到的数据无效");
+        if (data.ReviewEvents === undefined)
+          console.warn("API response might be missing 'ReviewEvents'.");
+        processData(data);
+        isLoading.value = false;
+        console.log("use api:", targetUrl);
+      })
+      .catch((error) => {
+        lastError = error;
+        // 尝试下一个代理
+        tryFetch(index + 1);
+      });
+  }
+  tryFetch(0);
 }
 
 function toUTC8DateFromUTC3(timestampInSeconds) {
