@@ -45,7 +45,7 @@
     ```
 2.  将链接中的域名 `track.authorhub.elsevier.com` 替换为我们的[公共体验地址](#-公共体验地址选项)中的任意一个，像这样：
     ```
-    https://happy-cliff-0660af200.6.azurestaticapps.net/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    https://elsevier-tracker-web.pages.dev/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     ```
 3.  在浏览器中打开修改后的链接，即可开始追踪！
 
@@ -57,7 +57,7 @@
 
 **然而，由于浏览器的 CORS（跨源资源共享）策略限制，网页无法直接访问该官方 API。**
 
-**解决方案：** 我们部署了一个**中转 API 代理** (`https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=`) 来绕过这个限制。这意味着当你使用本项目的公共体验地址时：
+**解决方案：** 我们部署了一个**中转 API 代理** (`https://elsevier-tracker-web.pages.dev/cors-proxy?uuid=`) 来绕过这个限制。这意味着当你使用本项目的公共体验地址时：
 
 1.  你的查询请求（包含稿件的 `uuid`）会先发送到我们的中转 API 代理。
 2.  中转 API 代理再代替你的浏览器去请求官方 API。
@@ -74,7 +74,7 @@
 
 **🛡️ 更安全的选择：自行部署**
 
-如果你对数据隐私有较高要求，强烈建议你**自行部署** API 代理和前端网页。这样，你的 `uuid` 数据将只经过你自己控制的服务器，从而最大限度地保障信息安全。请参考下面的【开发与部署】章节。
+如果你对数据隐私有较高要求，强烈建议你**自行部署** API 代理和前端网页。这样，你的 `uuid` 数据将只经过你自己控制的服务器，从而最大限度地保障信息安全。请参考下面的[【开发与部署】](#️-开发与部署)章节。
 
 ---
 
@@ -82,9 +82,26 @@
 选择最适合你网络环境的地址，线路互通，可随时切换！
 | 线路说明   | 前端访问地址 | API代理地址（无需手动设置） | 推荐人群 |
 |------------|-------------|-------------|----------|
-| **Azure实例（国内、稳定、中速）【首选】** | [https://happy-cliff-0660af200.6.azurestaticapps.net](https://happy-cliff-0660af200.6.azurestaticapps.net) | `https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=your_uuid` | 国内用户优先 |
+| **Cloudflare实例（通用、稳定、快速）【首选】** | [https://elsevier-tracker-web.pages.dev](https://elsevier-tracker-web.pages.dev) | `https://elsevier-tracker-web.pages.dev/cors-proxy?uuid=your_uuid` | 国内用户优先 |
+| **Azure实例（国内、稳定、中速）** | [https://happy-cliff-0660af200.6.azurestaticapps.net](https://happy-cliff-0660af200.6.azurestaticapps.net) | `https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=your_uuid` | 国内用户优先 |
 | **Vercel实例（国际、稳定、快速）** | [https://elsevier-tracker-web.vercel.app](https://elsevier-tracker-web.vercel.app) | `https://elsevier-api-proxy.vercel.app/api/your_uuid` | 国际/海外网络 |
 | **Vercel中转（国内、不稳定、快速）** | [https://elsevier-tracker-web.599600.xyz](https://elsevier-tracker-web.599600.xyz) | `https://elsevier-api-proxy.599600.xyz/api/your_uuid` | 国内，备用 |
+
+---
+
+## ❤️ 赞助与支持
+希望这个工具能为你的科研之路添砖加瓦！🎉  
+如果觉得有用，请 Star ⭐️ 项目，也欢迎分享至社交平台帮助更多科研同仁。
+
+**🌟 鼓励自部署+分享！**
+如果你有能力自部署前后端，欢迎将你的可用体验地址通过 issue/PR 分享给社区，让更多人受益！
+
+**赞赏支持**
+1. 微信赞赏码：
+   <div align="center">
+   <img src="docs/donation_qr_code.jpg" width="40%">
+   </div>
+2. 通过自部署、反馈问题、贡献代码/体验地址等方式支持项目发展。
 
 ---
 
@@ -96,25 +113,34 @@
 
 此步骤将部署用于绕过 CORS 限制的中转服务器。
 
-```bash
-# 进入 API 代理子项目目录
-cd elsevier-api-proxy
 
-# 安装依赖 (如果需要)
-# npm install
+*   **方式一：使用 Cloudflare 部署 (推荐)**  
+    Fork 本项目，在 Cloudflare Pages 中部署。  
+    将自动部署前端和 API 代理（通过Functions）。   
+    前端地址类似于： `https://your-project-name.pages.dev`  
+    API 代理地址类似于： `https://your-project-name.pages.dev/cors-proxy?uuid=your_uuid`
 
-# 使用 Vercel CLI 部署到 Vercel 平台
-# (需要先安装 Vercel CLI: npm i -g vercel，并登录: vercel login)
-vercel --prod
-```
+*   **方式二：使用 Vercel 部署**
+    ```bash
+    # 进入代理子项目目录
+    cd proxy/vercel
+    # 执行部署命令
+    npm vercel --prod
+    ```
+    构建完成后，Vercel 会生成一个 API 代理项目，你可以通过路由 `/api/your_uuid` 进行使用，例如 `https://your-proxy-name.vercel.app/api/your_uuid`。
 
-部署成功后，Vercel 会提供一个生产环境的 URL，例如 `https://your-proxy-name.vercel.app`。记下这个 URL，后面会用到。
+*   **方式三：使用 Azure 部署（较为复杂）**
+    ```bash
+    # 进入代理子项目目录
+    cd proxy/azure
+    ```
+    使用 VSCode 打开项目，并安装Azure Functions 插件，然后创建一个 Azure Functions 项目。再进行部署
 
-### 2. 网页前端部署
+### 2. 网页前端部署（如果第一步选择了 Cloudflare 则无需重复部署）
 
 ```bash
 # (如果刚才进入了子目录) 回到项目根目录
-cd ..
+cd ...
 
 # 打开前端代码文件: src/App.vue
 # 找到 apiUrl 常量，将其值修改为你自己部署的 API 代理地址
@@ -148,19 +174,3 @@ cd ..
     npm run build
     ```
     构建完成后，会在 `dist` 目录下生成静态文件。你可以将 `dist` 目录下的所有内容部署到任何静态文件服务器上（如 Nginx, Apache, GitHub Pages 等）。
-
----
-
-## ❤️ 赞助与支持
-希望这个工具能为你的科研之路添砖加瓦！🎉  
-如果觉得有用，请 Star ⭐️ 项目，也欢迎分享至社交平台帮助更多科研同仁。
-
-**🌟 鼓励自部署+分享！**
-如果你有能力自部署前后端，欢迎将你的可用体验地址通过 issue/PR 分享给社区，让更多人受益！
-
-**赞赏支持**
-1. 微信赞赏码：
-   <div align="center">
-   <img src="docs/donation_qr_code.jpg" width="40%">
-   </div>
-2. 通过自部署、反馈问题、贡献代码/体验地址等方式支持项目发展。
