@@ -2,7 +2,7 @@
 
 <div align=center>
 
-[![Azure](https://img.shields.io/badge/Demo-online-brightgreen?style=for-the-badge&logo=azure-static-web-apps)](https://happy-cliff-0660af200.6.azurestaticapps.net/)
+[![Azure](https://img.shields.io/badge/Demo-online-brightgreen?style=for-the-badge&logo=azure-static-web-apps)](#🛜-公共体验地址选项)
 
 </div>
 
@@ -43,7 +43,7 @@
     ```url
     https://track.authorhub.elsevier.com/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     ```
-2.  将链接中的域名 `track.authorhub.elsevier.com` 替换为我们的体验地址 `happy-cliff-0660af200.6.azurestaticapps.net`，像这样：
+2.  将链接中的域名 `track.authorhub.elsevier.com` 替换为我们的[公共体验地址](#🛜-公共体验地址选项)中的任意一个，像这样：
     ```
     https://happy-cliff-0660af200.6.azurestaticapps.net/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     ```
@@ -75,6 +75,18 @@
 **🛡️ 更安全的选择：自行部署**
 
 如果你对数据隐私有较高要求，强烈建议你**自行部署** API 代理和前端网页。这样，你的 `uuid` 数据将只经过你自己控制的服务器，从而最大限度地保障信息安全。请参考下面的【开发与部署】章节。
+
+---
+
+## 🛜 公共体验地址选项
+选择最适合你网络环境的地址，线路互通，可随时切换！
+| 线路说明   | 前端访问地址 | API代理地址（无需手动设置） | 推荐人群 |
+|------------|-------------|-------------|----------|
+| **Azure实例（国内、稳定、中速）【首选】** | [https://happy-cliff-0660af200.6.azurestaticapps.net](https://happy-cliff-0660af200.6.azurestaticapps.net) | `https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=your_uuid` | 国内用户优先 |
+| **Vercel实例（国际、稳定、快速）** | [https://elsevier-tracker-web.vercel.app](https://elsevier-tracker-web.vercel.app) | `https://elsevier-api-proxy.vercel.app/api/your_uuid` | 国际/海外网络 |
+| **Vercel中转（国内、不稳定、快速）** | [https://elsevier-tracker-web.599600.xyz](https://elsevier-tracker-web.599600.xyz) | `https://elsevier-api-proxy.599600.xyz/api/your_uuid` | 国内，备用 |
+
+---
 
 ## 🛠️ 开发与部署
 
@@ -139,31 +151,16 @@ cd ..
 
 ---
 
-## 🛜 公共体验地址选项
+## ❤️ 赞助与支持
+希望这个工具能为你的科研之路添砖加瓦！🎉  
+如果觉得有用，请 Star ⭐️ 项目，也欢迎分享至社交平台帮助更多科研同仁。
 
-1.  **Azure 前端体验地址（国内稳定）**：[https://happy-cliff-0660af200.6.azurestaticapps.net](https://happy-cliff-0660af200.6.azurestaticapps.net)
+**🌟 鼓励自部署+分享！**
+如果你有能力自部署前后端，欢迎将你的可用体验地址通过 issue/PR 分享给社区，让更多人受益！
 
-2.  **Vercel 前端体验地址（国际稳定）**：[https://elsevier-tracker-web.vercel.app](https://elsevier-tracker-web.vercel.app)
-
-3.  **Azure API 代理体验地址（国内稳定）**：[https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=your_uuid](https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=your_uuid)
-
-4.  **Vercel API 代理体验地址（国际稳定）**：[https://elsevier-api-proxy.vercel.app/api/your_uuid](https://elsevier-api-proxy.vercel.app/api/your_uuid)
-
----
-
-## ❤️ 赞助
-
-希望这个工具能为你的科研之路提供一点小小的便利！🎉   
-如果这个工具对您有帮助，请不要吝啬你的 Star⭐️ ！  
-欢迎您在社交平台分享这个工具，以帮助更多科研人员了解和利用这个工具。  
-您的支持是我继续维护和开发这个项目的动力。
-祝您科研之旅顺利！
-
-您可以通过以下方式进行赞助：
-
-1. 通过微信赞赏码
-<div align="center">
-<img src="docs/donation_qr_code.jpg" width="40%">
-</div>
-
-2. 通过自部署前后端，并提交 issue/PR 以减轻服务器压力。
+**赞赏支持**
+1. 微信赞赏码：
+   <div align="center">
+   <img src="docs/donation_qr_code.jpg" width="40%">
+   </div>
+2. 通过自部署、反馈问题、贡献代码/体验地址等方式支持项目发展。
