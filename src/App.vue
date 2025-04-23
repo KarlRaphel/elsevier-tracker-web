@@ -2,7 +2,7 @@
 import { ref, reactive, computed } from "vue";
 
 // 首选查询的代理地址，可以自己部署
-const apiUrl = "https://elsevier-api-proxy.vercel.app/api/";
+const apiUrl = "/cors-proxy?uuid=";
 
 // 如果首选查询代理地址无效，将自动按照以下顺序进行尝试
 const apiUrlOptions = [
