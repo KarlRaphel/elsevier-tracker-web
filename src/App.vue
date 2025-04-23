@@ -275,7 +275,9 @@ function toggleRevision(revId) {
 if (uuid.value) {
   updateState();
 } else {
-  errorMsg.value = "URL中缺少稿件 'uuid' 参数";
+  errorMsg.value = `URL中缺少稿件 'uuid' 参数 <br/>
+  正确的URL应该为 ${window.location.origin}/?uuid=您的论文UUID <br/>
+  您可以在通讯作者的邮件中查看UUID，例如https://track.authorhub.elsevier.com/?uuid=这里就是您的UUID`;
   isLoading.value = false;
   paperTitle.value = "错误";
 }
@@ -288,7 +290,7 @@ if (uuid.value) {
     <div v-if="isLoading" class="loading-indicator card">
       正在加载稿件信息...
     </div>
-    <div v-if="errorMsg" class="error-message card">{{ errorMsg }}</div>
+    <div v-if="errorMsg" class="error-message card" v-html="errorMsg"></div>
 
     <div v-if="!isLoading && !errorMsg">
       <div class="manuscript-info card">
