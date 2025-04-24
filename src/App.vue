@@ -1,14 +1,13 @@
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive } from "vue";
 
 // 首选查询的代理地址，可以自己部署
-const apiUrl = "https://elsevier-api-proxy.vercel.app/api/";
-
+const apiUrl = "https://elsevier-tracker-web.pages.dev/cors-proxy/?uuid=";
 // 如果首选查询代理地址无效，将自动按照以下顺序进行尝试
 const apiUrlOptions = [
   "https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=",
-  "https://elsevier-api-proxy.599600.xyz/api/",
   "https://elsevier-api-proxy.vercel.app/api/",
+  "https://elsevier-api-proxy.599600.xyz/api/",
   "https://tnlkuelk67.execute-api.us-east-1.amazonaws.com/tracker/",
 ];
 
@@ -172,7 +171,8 @@ function updateState() {
     ...apiUrlOptions.map((url) => `${url}${uuid.value}`),
   ];
   let lastError = null;
-  const TIMEOUT_MS = 5000;
+  // 设置超时时间
+  const TIMEOUT_MS = 3000;
   function tryFetch(index) {
     if (index >= urlList.length) {
       // 全部失败
@@ -190,7 +190,7 @@ function updateState() {
       return;
     }
     const targetUrl = urlList[index];
-    noewApi.value = new URL(urlList[index]).hostname;
+    noewApi.value = urlList[index].replace(uuid.value, "");
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
       controller.abort();
