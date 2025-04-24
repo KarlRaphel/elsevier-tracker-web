@@ -9,8 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@microsoft/clarity": "^1.0.0",
-    "vercel": "^41.6.1",
     "vue": "^3.5.13"
   },
   "devDependencies": {
