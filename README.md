@@ -97,9 +97,9 @@
 如果你有能力自部署前后端，欢迎将你的可用体验地址通过 issue/PR 分享给社区，让更多人受益！
 
 **赞赏支持**
-1. 微信赞赏码：
+1. 捐赠码：
    <div align="center">
-   <img src="docs/donation_qr_code.jpg" width="40%">
+   <img src="public/donation_qr_code.jpg" width="70%">
    </div>
 2. 通过自部署、反馈问题、贡献代码/体验地址等方式支持项目发展。
 

@@ -31,6 +31,8 @@ const errorMsg = ref("");
 
 const noewApi = ref("");
 
+const showDonationCode = ref(false);
+
 // --- Initialization ---
 const queryString = window.location.search;
 const params = new URLSearchParams(queryString);
@@ -279,6 +281,10 @@ function toggleRevision(revId) {
   expandedRevision.value = expandedRevision.value === revId ? null : revId;
 }
 
+function toggleDonation() {
+  showDonationCode.value = !showDonationCode.value;
+}
+
 // --- Initial Data Load ---
 if (uuid.value) {
   updateState();
@@ -489,13 +495,25 @@ if (uuid.value) {
     </div>
 
     <div class="footer">
-      <a href="https://github.com/KarlRaphel/elsevier-tracker-web"
-        >View Source on GitHub
-      </a>
-      <span style="width: 20px">|</span>
-      <img
-        src="https://img.shields.io/github/stars/KarlRaphel/elsevier-tracker-web"
-      />
+      <div class="footer-text">
+        <a href="https://github.com/KarlRaphel/elsevier-tracker-web"
+          >View Source on GitHub
+        </a>
+        <span style="width: 20px">|</span>
+        <img
+          src="https://img.shields.io/github/stars/KarlRaphel/elsevier-tracker-web"
+        />
+      </div>
+      <div class="footer-text" @click="toggleDonation">
+        觉得好用？欢迎Star⭐️ / 分享📢 / 捐赠1元💰
+      </div>
+      <div class="footer-text" v-show="showDonationCode">
+        <img
+          src="/donation_qr_code.jpg"
+          alt="捐赠二维码"
+          style="width: 250px"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -819,6 +837,12 @@ h2 {
   padding: 5px;
   display: flex;
   background-color: #f8f9fa;
+  flex-direction: column;
+}
+
+.footer-text {
+  padding: 2px;
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
