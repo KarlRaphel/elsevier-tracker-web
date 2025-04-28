@@ -14,11 +14,13 @@ const apiUrlOptions = [
 // --- State Refs ---
 const uuid = ref("");
 const paperTitle = ref("");
+const submission = ref("");
 const journalInfo = ref("");
 const firstAuthor = ref("");
 const corrAuthor = ref("");
 const pubID = ref("");
 const lastUpdated = ref("");
+const nowState = ref("Review Complete");
 
 const revisionMap = reactive({});
 const revisionSummary = reactive({});
@@ -149,6 +151,17 @@ function sortReviewers(data) {
   });
 }
 
+function mapStatus(status) {
+  switch (status) {
+    case 3:
+      return "Under Review";
+    case 4:
+      return "Required Reviews Complete";
+    case 23:
+      return "Under Review";
+  }
+}
+
 function processData(data) {
   paperTitle.value = data.ManuscriptTitle || "N/A";
   journalInfo.value =
@@ -161,6 +174,10 @@ function processData(data) {
   corrAuthor.value = data.CorrespondingAuthor || "N/A";
   pubID.value = data.PubdNumber || "N/A";
   lastUpdated.value = data.LastUpdated ? formatStamp(data.LastUpdated) : "N/A";
+  submission.value = data.SubmissionDate
+    ? formatStamp(data.SubmissionDate)
+    : "N/A";
+  nowState.value = data.Status ? mapStatus(data.Status) : "Review Complete";
   groupEvents(data);
 }
 
@@ -188,6 +205,8 @@ function updateState() {
       pubID.value = "";
       lastUpdated.value = "";
       revisionList.value = [];
+      submission.value = "";
+      nowState.value = "";
       isLoading.value = false;
       return;
     }
@@ -311,10 +330,12 @@ if (uuid.value) {
         <h2>稿件信息</h2>
         <div><strong>稿件标题：</strong> {{ paperTitle }}</div>
         <div><strong>投稿期刊：</strong> {{ journalInfo }}</div>
+        <div><strong>投稿时间：</strong> {{ submission }}</div>
         <div><strong>第一作者：</strong> {{ firstAuthor }}</div>
         <div><strong>通讯作者：</strong> {{ corrAuthor }}</div>
         <div><strong>稿件编号：</strong> {{ pubID }}</div>
         <div><strong>最后更新时间：</strong> {{ lastUpdated }}</div>
+        <div><strong>当前稿件状态：</strong> {{ nowState }}</div>
       </div>
 
       <div class="revisions-section" v-if="revisionList.length > 0">
