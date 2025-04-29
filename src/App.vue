@@ -206,7 +206,7 @@ function updateState() {
       lastUpdated.value = "";
       revisionList.value = [];
       submission.value = "";
-      nowState.value = "";
+      nowState.value = "Review Complete";
       isLoading.value = false;
       return;
     }
