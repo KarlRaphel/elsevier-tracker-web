@@ -160,6 +160,7 @@ function mapStatus(status) {
     case 23:
       return "Under Review";
   }
+  return "Review Complete";
 }
 
 function processData(data) {
