@@ -24,6 +24,7 @@ if (!officialDomains.includes(window.location.hostname)) {
 
 // --- State Refs ---
 const uuid = ref("");
+const redirectPath = ref("");
 const paperTitle = ref("");
 const submission = ref("");
 const journalInfo = ref("");
@@ -50,6 +51,9 @@ const showDonationCode = ref(false);
 const queryString = window.location.search;
 const params = new URLSearchParams(queryString);
 uuid.value = params.get("uuid");
+if (uuid.value) {
+  redirectPath.value = "/?uuid=" + uuid.value;
+}
 
 // --- Core Logic Functions (groupEvents, sortReviewers, processData, updateState, etc.) ---
 // These functions remain the same as the previous version.
@@ -335,9 +339,7 @@ if (uuid.value) {
       当前域名可能在未来不受支持，请尽快选择转移到以下域名继续使用：<br />
       <ul>
         <li v-for="d in officialDomains" :key="d">
-          <a :href="'https://' + d + '/?uuid=' + uuid" target="_blank">{{
-            d
-          }}</a>
+          <a :href="'https://' + d + redirectPath" target="_blank">{{ d }}</a>
         </li>
       </ul>
       <button @click="showDomainWarning = false">我知道了</button>
