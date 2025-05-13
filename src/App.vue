@@ -2,14 +2,25 @@
 import { ref, reactive } from "vue";
 
 // 首选查询的代理地址，可以自己部署
-const apiUrl = "https://elsevier-tracker-web.pages.dev/cors-proxy/?uuid=";
+const apiUrl = "https://et.888421.xyz/cors-proxy?uuid=";
 // 如果首选查询代理地址无效，将自动按照以下顺序进行尝试
 const apiUrlOptions = [
-  "https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=",
-  "https://elsevier-api-proxy.vercel.app/api/",
-  "https://elsevier-api-proxy.599600.xyz/api/",
-  "https://tnlkuelk67.execute-api.us-east-1.amazonaws.com/tracker/",
+  "https://et-cf.888421.xyz/cors-proxy?uuid=",
+  "https://et-az-api.888421.xyz/api/proxy?uuid=",
+  "https://et-vc-api.888421.xyz/api/",
 ];
+
+const officialDomains = [
+  "et.888421.xyz",
+  "et-cf.888421.xyz",
+  "et-az.888421.xyz",
+  "et-vc.888421.xyz",
+];
+
+const showDomainWarning = ref(false);
+if (!officialDomains.includes(window.location.hostname)) {
+  showDomainWarning.value = true;
+}
 
 // --- State Refs ---
 const uuid = ref("");
@@ -318,6 +329,19 @@ if (uuid.value) {
 </script>
 
 <template>
+  <div v-if="showDomainWarning" class="domain-warning-overlay">
+    <div class="domain-warning-box">
+      <strong>温馨提示：</strong><br />
+      当前域名可能在未来不受支持，请尽快选择转移到以下域名继续使用：<br />
+      <ul>
+        <li v-for="d in officialDomains" :key="d">
+          <a :href="'https://' + d" target="_blank">{{ d }}</a>
+        </li>
+      </ul>
+      <button @click="showDomainWarning = false">我知道了</button>
+    </div>
+  </div>
+
   <div class="container">
     <h1>爱思唯尔稿件状态追踪</h1>
 
@@ -868,5 +892,44 @@ h2 {
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.domain-warning-overlay {
+  position: fixed;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.domain-warning-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.11);
+  max-width: 90vw;
+  font-size: 1.05em;
+}
+.domain-warning-box button {
+  margin-top: 18px;
+  padding: 6px 18px;
+  background: #c0e7ff;
+  border: none;
+  border-radius: 4px;
+  color: #333;
+  cursor: pointer;
+  font-size: 1em;
+}
+.domain-warning-box ul {
+  margin: 10px 0 0 18px;
+  padding: 0;
+}
+.domain-warning-box a {
+  color: #1677ff;
+  text-decoration: underline;
 }
 </style>

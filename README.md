@@ -45,7 +45,7 @@
     ```
 2.  将链接中的域名 `track.authorhub.elsevier.com` 替换为我们的[公共体验地址](#-公共体验地址选项)中的任意一个，像这样：
     ```
-    https://elsevier-tracker-web.pages.dev/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    https://et.888421.xyz/?uuid=xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     ```
 3.  在浏览器中打开修改后的链接，即可开始追踪！
 
@@ -57,7 +57,7 @@
 
 **然而，由于浏览器的 CORS（跨源资源共享）策略限制，网页无法直接访问该官方 API。**
 
-**解决方案：** 我们部署了一个**中转 API 代理** (`https://elsevier-tracker-web.pages.dev/cors-proxy?uuid=`) 来绕过这个限制。这意味着当你使用本项目的公共体验地址时：
+**解决方案：** 我们部署了一个**中转 API 代理** (`https://et.888421.xyz/cors-proxy?uuid=`) 来绕过这个限制。这意味着当你使用本项目的公共体验地址时：
 
 1.  你的查询请求（包含稿件的 `uuid`）会先发送到我们的中转 API 代理。
 2.  中转 API 代理再代替你的浏览器去请求官方 API。
@@ -80,12 +80,12 @@
 
 ## 🛜 公共体验地址选项
 选择最适合你网络环境的地址，线路互通，可随时切换！
-| 线路说明   | 前端访问地址 | API代理地址（无需手动设置） | 推荐人群 |
+| 线路说明   | 前端访问地址 | API代理地址（无需手动设置） | |
 |------------|-------------|-------------|----------|
-| **Cloudflare实例（通用、稳定、快速）【首选】** | [https://elsevier-tracker-web.pages.dev](https://elsevier-tracker-web.pages.dev) | `https://elsevier-tracker-web.pages.dev/cors-proxy?uuid=your_uuid` | 国内用户优先 |
-| **Azure实例（国内、稳定、中速）** | [https://happy-cliff-0660af200.6.azurestaticapps.net](https://happy-cliff-0660af200.6.azurestaticapps.net) | `https://elsevier-api-proxy.azurewebsites.net/api/proxy?uuid=your_uuid` | 国内用户优先 |
-| **Vercel实例（国际、稳定、快速）** | [https://elsevier-tracker-web.vercel.app](https://elsevier-tracker-web.vercel.app) | `https://elsevier-api-proxy.vercel.app/api/your_uuid` | 国际/海外网络 |
-| **Vercel中转（国内、不稳定、快速）** | [https://elsevier-tracker-web.599600.xyz](https://elsevier-tracker-web.599600.xyz) | `https://elsevier-api-proxy.599600.xyz/api/your_uuid` | 国内，备用 |
+| **自动** | [https://et.888421.xyz](https://et.888421.xyz) | `https://et.888421.xyz/cors-proxy?uuid=your_uuid` |
+| **Cloudflare实例** | [https://et-cf.888421.xyz](https://et-cf.888421.xyz) | `https://et-cf.888421.xyz/cors-proxy?uuid=your_uuid`  |
+| **Azure实例** | [https://et-az.888421.xyz](https://et-az.888421.xyz) | `https://et-az-api.888421.xyz/api/proxy?uuid=your_uuid`  |
+| **Vercel示例** | [https://et-vc.888421.xyz](https://et-vc.888421.xyz) | `https://et-vc-api.888421.xyz/api/your_uuid`  |
 
 ---
 
