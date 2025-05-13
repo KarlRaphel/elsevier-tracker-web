@@ -335,7 +335,9 @@ if (uuid.value) {
       当前域名可能在未来不受支持，请尽快选择转移到以下域名继续使用：<br />
       <ul>
         <li v-for="d in officialDomains" :key="d">
-          <a :href="'https://' + d" target="_blank">{{ d }}</a>
+          <a :href="'https://' + d + '/?uuid=' + uuid" target="_blank">{{
+            d
+          }}</a>
         </li>
       </ul>
       <button @click="showDomainWarning = false">我知道了</button>
