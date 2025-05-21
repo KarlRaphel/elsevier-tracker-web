@@ -598,8 +598,9 @@ if (uuid.value) {
           src="https://img.shields.io/github/stars/KarlRaphel/elsevier-tracker-web"
         />
       </div>
+      <div class="footer-text">您已查询 {{ visitCount }} 次！觉得好用吗？</div>
       <div class="footer-text" @click="toggleDonation">
-        您已查询{{ visitCount }}次 / 欢迎Star⭐️ / 分享📢 / 捐赠1元💰
+        欢迎Star⭐️ / 分享📢 / 捐赠1元💰
       </div>
       <div class="footer-text" v-show="showDonationCode">
         <img
