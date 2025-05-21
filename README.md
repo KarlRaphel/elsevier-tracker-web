@@ -139,16 +139,7 @@
 
 ### 2. 网页前端部署（如果第一步选择了 Cloudflare 则无需重复部署）
 
-```bash
-# (如果刚才进入了子目录) 回到项目根目录
-cd ...
-
-# 打开前端代码文件: src/App.vue
-# 找到 apiUrl 常量，将其值修改为你自己部署的 API 代理地址
-# 例如: const apiUrl = "https://your-proxy-name.vercel.app/api/";
-```
-
-修改完 `apiUrl` 后，你可以选择以下方式部署前端网页：
+参考[文档](docs/private-use.md)进行代码修改后，你可以选择以下方式部署前端网页：
 
 *   **方式一：使用 Vercel 部署 (推荐)**
     ```bash

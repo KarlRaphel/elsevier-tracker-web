@@ -17,6 +17,8 @@ const officialDomains = [
   "et-vc.888421.xyz",
 ];
 
+const projectHomepage = "https://github.com/KarlRaphel/elsevier-tracker-web";
+
 const showDomainWarning = ref(false);
 if (!officialDomains.includes(window.location.hostname)) {
   showDomainWarning.value = true;
@@ -43,7 +45,49 @@ const expandedRevision = ref(null);
 const isLoading = ref(true);
 const errorMsg = ref("");
 
-const noewApi = ref("");
+const nowApi = ref("");
+
+const visitCount = ref(0);
+const showStarMePopup = ref(false);
+const hasVisitedGithub = ref(false);
+
+const storedVisitCount = localStorage.getItem("appVisitCount");
+if (storedVisitCount) {
+  visitCount.value = parseInt(storedVisitCount, 10);
+}
+
+// Load GitHub visit status from localStorage
+const storedHasVisitedGithub = localStorage.getItem("appHasVisitedGithub");
+if (storedHasVisitedGithub) {
+  hasVisitedGithub.value = storedHasVisitedGithub === "true";
+}
+
+// Increment visit count for the current session
+visitCount.value++;
+localStorage.setItem("appVisitCount", visitCount.value.toString());
+
+// Check if it's time to show the popup
+if (
+  visitCount.value > 0 &&
+  visitCount.value % 10 === 0 &&
+  !hasVisitedGithub.value
+) {
+  showStarMePopup.value = true;
+}
+
+function handleGoToGithub() {
+  window.open(projectHomepage, "_blank");
+  hasVisitedGithub.value = true;
+  localStorage.setItem("appHasVisitedGithub", "true");
+  showStarMePopup.value = false;
+}
+
+function handleLater() {
+  showStarMePopup.value = false;
+  // Optional: You could decide to reset hasVisitedGithub here if "Later" means
+  // "ask me again next time". For now, "Later" just closes it for this 10th visit.
+  // If they don't go to GitHub, they will be asked again on the 20th, 30th etc. visit.
+}
 
 const showDonationCode = ref(false);
 
@@ -227,7 +271,7 @@ function updateState() {
       return;
     }
     const targetUrl = urlList[index];
-    noewApi.value = urlList[index].replace(uuid.value, "");
+    nowApi.value = urlList[index].replace(uuid.value, "");
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
       controller.abort();
@@ -350,7 +394,7 @@ if (uuid.value) {
     <h1>爱思唯尔稿件状态追踪</h1>
 
     <div v-if="isLoading" class="loading-indicator card">
-      正在尝试通过 {{ noewApi }} 查询稿件信息...
+      正在尝试通过 {{ nowApi }} 查询稿件信息...
     </div>
     <div v-if="errorMsg" class="error-message card" v-html="errorMsg"></div>
 
@@ -394,7 +438,7 @@ if (uuid.value) {
                 {{ revisionSummary[rev].review }} 审稿中
               </span>
               <span class="summary-item mute">
-                {{ revisionSummary[rev].mute }} 已邀请
+                {{ revisionSummary[rev].mute }} 邀请中
               </span>
             </div>
             <span class="toggle-icon">{{
@@ -555,7 +599,7 @@ if (uuid.value) {
         />
       </div>
       <div class="footer-text" @click="toggleDonation">
-        觉得好用？欢迎Star⭐️ / 分享📢 / 捐赠1元💰
+        您已查询{{ visitCount }}次 / 欢迎Star⭐️ / 分享📢 / 捐赠1元💰
       </div>
       <div class="footer-text" v-show="showDonationCode">
         <img
@@ -566,6 +610,31 @@ if (uuid.value) {
       </div>
     </div>
   </div>
+
+  <!-- Star Me Popup -->
+  <div v-if="showStarMePopup" class="star-me-overlay">
+    <div class="star-me-popup">
+      <h3>喜欢这个工具吗？</h3>
+      <p>你已经使用了这个工具 {{ visitCount }} 次啦！</p>
+      <p>
+        如果您觉得这个稿件状态追踪工具对您有帮助，请考虑在 GitHub 上给我们一个
+        Star ⭐！
+      </p>
+      <p>这能帮助更多人发现它，也是对开发者小小的鼓励。</p>
+      <img
+        src="/star_me.png"
+        alt="How to star on GitHub"
+        class="star-me-image"
+      />
+      <div class="star-me-actions">
+        <button @click="handleLater" class="button-later">下次再说</button>
+        <button @click="handleGoToGithub" class="button-gostart">
+          现在就去
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- End of Star Me Popup -->
 </template>
 
 <style scoped>
@@ -935,5 +1004,78 @@ h2 {
 .domain-warning-box a {
   color: #1677ff;
   text-decoration: underline;
+}
+
+.star-me-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top */
+}
+
+.star-me-popup {
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 450px;
+  width: 90%;
+}
+
+.star-me-popup h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.star-me-popup p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.star-me-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border: 1px solid #eee;
+}
+
+.star-me-actions {
+  display: flex;
+  justify-content: space-around; /* Or space-between, or flex-end */
+  margin-top: 20px;
+}
+
+.star-me-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.star-me-actions .button-later {
+  background-color: #f0f0f0;
+  color: #333;
+}
+.star-me-actions .button-later:hover {
+  background-color: #e0e0e0;
+}
+
+.star-me-actions .button-gostart {
+  background-color: #28a745; /* A nice green for "go" */
+  color: white;
+}
+.star-me-actions .button-gostart:hover {
+  background-color: #218838;
 }
 </style>
