@@ -609,8 +609,8 @@ if (uuid.value) {
           <span class="revision-title"> Revision {{ nowRound }} </span>
           <div class="revision-summary">
             <span class="summary-item complete"> {{ numComplete }} 完成 </span>
-            <span class="summary-item review"> {{ numReview }} 审稿中 </span>
-            <span class="summary-item mute"> {{ numSend }} 邀请中 </span>
+            <span class="summary-item review"> {{ numReview }} 接受 </span>
+            <span class="summary-item mute"> {{ numSend }} 邀请 </span>
           </div>
         </div>
         <p>
