@@ -51,6 +51,12 @@ const visitCount = ref(0);
 const showStarMePopup = ref(false);
 const hasVisitedGithub = ref(false);
 
+const newApi = ref(false);
+const nowRound = ref(0);
+const numSend = ref("0");
+const numReview = ref("0");
+const numComplete = ref("0");
+
 const storedVisitCount = localStorage.getItem("appVisitCount");
 if (storedVisitCount) {
   visitCount.value = parseInt(storedVisitCount, 10);
@@ -80,6 +86,13 @@ function handleGoToGithub() {
   hasVisitedGithub.value = true;
   localStorage.setItem("appHasVisitedGithub", "true");
   showStarMePopup.value = false;
+}
+
+function handleShowApiContent() {
+  let officialUrl =
+    "https://tnlkuelk67.execute-api.us-east-1.amazonaws.com/tracker/" +
+    uuid.value;
+  window.open(officialUrl, "_blank");
 }
 
 function handleLater() {
@@ -238,6 +251,14 @@ function processData(data) {
     ? formatStamp(data.SubmissionDate)
     : "N/A";
   nowState.value = data.Status ? mapStatus(data.Status) : "Review Complete";
+
+  if (data.ReviewSummary) {
+    newApi.value = true;
+    nowRound.value = data.LatestRevisionNumber;
+    numSend.value = data.ReviewSummary.ReviewInvitationsSent;
+    numReview.value = data.ReviewSummary.ReviewInvitationsAccepted;
+    numComplete.value = data.ReviewSummary.ReviewsCompleted;
+  }
   groupEvents(data);
 }
 
@@ -582,6 +603,27 @@ if (uuid.value) {
             </div>
           </div>
         </div>
+      </div>
+      <div v-else-if="newApi" class="revisions-section card">
+        <div class="revision-header">
+          <span class="revision-title"> Revision {{ nowRound }} </span>
+          <div class="revision-summary">
+            <span class="summary-item complete"> {{ numComplete }} 完成 </span>
+            <span class="summary-item review"> {{ numReview }} 审稿中 </span>
+            <span class="summary-item mute"> {{ numSend }} 邀请中 </span>
+          </div>
+        </div>
+        <p>
+          目前官方 API
+          已无法获取审稿状态详细信息，目前尚不清楚是临时升级还是永久修复，若有进一步消息，本项目将继续更新。详情与讨论请见
+          <a href="https://github.com/KarlRaphel/elsevier-tracker-web/issues/3"
+            >Issue #3
+          </a>
+          <br />
+          点击此处查看官方 API 返回数据：<button @click="handleShowApiContent">
+            查看
+          </button>
+        </p>
       </div>
       <div v-else-if="!isLoading && !errorMsg" class="revisions-section card">
         <p>暂无审稿事件信息。</p>
