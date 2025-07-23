@@ -604,7 +604,7 @@ if (uuid.value) {
           </div>
         </div>
       </div>
-      <div v-else-if="newApi" class="revisions-section card">
+      <div v-else-if="newApi" class="revision-block card latest">
         <div class="revision-header">
           <span class="revision-title"> Revision {{ nowRound }} </span>
           <div class="revision-summary">
@@ -613,7 +613,7 @@ if (uuid.value) {
             <span class="summary-item mute"> {{ numSend }} 邀请 </span>
           </div>
         </div>
-        <p>
+        <p class="api-warning">
           目前官方 API
           已无法获取审稿状态详细信息，目前尚不清楚是临时升级还是永久修复，若有进一步消息，本项目将继续更新。详情与讨论请见
           <a href="https://github.com/KarlRaphel/elsevier-tracker-web/issues/3"
@@ -1120,5 +1120,9 @@ h2 {
 }
 .star-me-actions .button-gostart:hover {
   background-color: #218838;
+}
+
+.api-warning {
+  margin: 15px;
 }
 </style>
